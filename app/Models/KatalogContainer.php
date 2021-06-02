@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kapal extends Model
+class KatalogContainer extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    
 }

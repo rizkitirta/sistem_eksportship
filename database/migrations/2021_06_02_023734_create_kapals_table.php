@@ -15,12 +15,10 @@ class CreateKapalsTable extends Migration
     {
         Schema::create('kapals', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_kapal');
-            $table->string('jenis_kapal');
-            $table->string('Kecepatan');
-            $table->string('berat_muatan');
-            $table->string('daya_mesin');
-            $table->string('letak_mesin');
+            $table->unsignedBigInteger('kapal_id');
+            $table->foreign('kapal_id')->references('id')->on('katalog_kapals')->onDelete('cascade');
+            $table->unsignedBigInteger('container_id');
+            $table->foreign('container_id')->references('id')->on('katalog_containers')->onDelete('cascade');
             $table->timestamps();
         });
     }

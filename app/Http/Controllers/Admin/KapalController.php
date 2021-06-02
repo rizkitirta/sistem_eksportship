@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pelabuhan;
+use App\Models\Kapal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use function GuzzleHttp\Promise\all;
 
-class PelabuhanController extends Controller
+class KapalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +18,11 @@ class PelabuhanController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Pelabuhan::all();
+        $data = Kapal::all();
         if ($request->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
-                    $button = '<button class="edit btn btn-primary btn-sm mb-1" id="' . $data->id . '" name="edit" ><i class="fas fa-edit"></i></button>';
+                    $button = '<button class="edit btn btn-primary btn-sm mr-1" id="' . $data->id . '" name="edit" ><i class="fas fa-edit"></i></button>';
                     $button .= '<button class="hapus btn btn-danger btn-sm " id="' . $data->id . '" name="hapus"><i class="fas fa-trash-alt"></i></button>';
                     return $button;
                 })
@@ -30,7 +30,7 @@ class PelabuhanController extends Controller
                 ->make(true);
         }
 
-        return view('admin.pelabuhan.index', compact('data'));
+        return view('admin.kapal.index', compact('data'));
     }
 
     /**
@@ -52,27 +52,21 @@ class PelabuhanController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'nama_pelabuhan' => 'required|string',
-            'negara' => 'required|string',
-            'lokasi' => 'required|string',
-            'operator' => 'required|string',
-            'otoritas_pelabuhan' => 'required|string',
-            'jenis_pelabuhan' => 'required',
-            'menghubungkan_ke' => 'required',
-            'jenis_dermaga' => 'required',
-            'kedatangan' => 'required',
+            'nama_kapal' => 'required|string',
+            'jenis_kapal' => 'required|string',
+            'kecepatan' => 'required|string',
+            'berat_muatan' => 'required|string',
+            'daya_mesin' => 'required|string',
+            'letak_mesin' => 'required|string',
         ];
 
         $message = [
-            'nama_pelabuhan.required' => 'Kolom nama tidak boleh kosong!',
-            'negara.required' => 'Kolom negara tidak boleh kosong!',
-            'lokasi.required' => 'Kolom lokasi tidak boleh kosong!',
-            'operator.required' => 'Kolom operator tidak boleh kosong!',
-            'otoritas_pelabuhan.required' => 'Kolom otoritas pelabuhan ridak boleh kosong!',
-            'jenis_pelabuhan.required' => 'Kolom Jenis Pelabuhan tidak boleh kosong!',
-            'menghubungkan_ke.required' => 'Kolom Menghubungkan tidak boleh kosong!',
-            'jenis_dermaga.required' => 'Kolom Jenis Dermaga tidak boleh kosong!',
-            'kedatangan.required' => 'Kolom kedatangan tidak boleh kosong!',
+            'nama_kapal.required' => 'Kolom nama tidak boleh kosong!',
+            'jenis_kapal.required' => 'Kolom jenis tidak boleh kosong!',
+            'kecepatan.required' => 'Kolom kecepatan tidak boleh kosong!',
+            'berat_muatan.required' => 'Kolom berat pelabuhan tidak boleh kosong!',
+            'daya_mesin.required' => 'Kolom daya pelabuhan tidak boleh kosong!',
+            'letak_mesin.required' => 'Kolom letak pelabuhan tidak boleh kosong!',
         ];
 
         $validasi = Validator::make($request->all(), $rules, $message);
@@ -80,7 +74,7 @@ class PelabuhanController extends Controller
             return response()->json(['message' => $validasi->errors()->first()], 422);
         }
 
-        $data = Pelabuhan::create($request->all());
+        $data = Kapal::create($request->all());
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Disimpan'], 200);
         } else {
@@ -107,7 +101,7 @@ class PelabuhanController extends Controller
      */
     public function edit(Request $request)
     {
-        $data = Pelabuhan::find($request->id);
+        $data = Kapal::find($request->id);
         return response()->json($data);
     }
 
@@ -121,34 +115,29 @@ class PelabuhanController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'nama_pelabuhan' => 'required|string',
-            'negara' => 'required|string',
-            'lokasi' => 'required|string',
-            'operator' => 'required|string',
-            'otoritas_pelabuhan' => 'required|string',
-            'jenis_pelabuhan' => 'required',
-            'menghubungkan_ke' => 'required',
-            'jenis_dermaga' => 'required',
-            'kedatangan' => 'required',
+            'nama_kapal' => 'required|string',
+            'jenis_kapal' => 'required|string',
+            'kecepatan' => 'required|string',
+            'berat_muatan' => 'required|string',
+            'daya_mesin' => 'required|string',
+            'letak_mesin' => 'required|string',
         ];
 
         $message = [
-            'nama_pelabuhan.required' => 'Kolom nama tidak boleh kosong!',
-            'negara.required' => 'Kolom negara tidak boleh kosong!',
-            'lokasi.required' => 'Kolom lokasi tidak boleh kosong!',
-            'operator.required' => 'Kolom operator tidak boleh kosong!',
-            'otoritas_pelabuhan.required' => 'Kolom otoritas pelabuhan ridak boleh kosong!',
-            'jenis_pelabuhan.required' => 'Kolom Jenis Pelabuhan tidak boleh kosong!',
-            'menghubungkan_ke.required' => 'Kolom Menghubungkan tidak boleh kosong!',
-            'jenis_dermaga.required' => 'Kolom Jenis Dermaga tidak boleh kosong!',
-            'kedatangan.required' => 'Kolom kedatangan tidak boleh kosong!',
+            'nama_kapal.required' => 'Kolom nama tidak boleh kosong!',
+            'jenis_kapal.required' => 'Kolom jenis tidak boleh kosong!',
+            'kecepatan.required' => 'Kolom kecepatan tidak boleh kosong!',
+            'berat_muatan.required' => 'Kolom berat pelabuhan tidak boleh kosong!',
+            'daya_mesin.required' => 'Kolom daya pelabuhan tidak boleh kosong!',
+            'letak_mesin.required' => 'Kolom letak pelabuhan tidak boleh kosong!',
         ];
+
         $validasi = Validator::make($request->all(), $rules, $message);
         if ($validasi->fails()) {
             return response()->json(['message' => $validasi->errors()->first()], 422);
         }
 
-        $data = Pelabuhan::find($request->id);
+        $data = Kapal::find($request->id);
         $data->update($request->all());
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Disimpan'], 200);
@@ -167,7 +156,7 @@ class PelabuhanController extends Controller
      */
     public function destroy(Request $request)
     {
-        $data = Pelabuhan::find($request->id);
+        $data = Kapal::find($request->id);
         $data->delete($data);
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Dihapus']);

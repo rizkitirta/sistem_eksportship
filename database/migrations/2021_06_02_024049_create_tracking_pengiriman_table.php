@@ -16,9 +16,9 @@ class CreateTrackingPengirimanTable extends Migration
         Schema::create('tracking_pengiriman', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kapal_id');
-            $table->foreign('kapal_id')->references('id')->on('kapals')->onDelete('cascade');
+            $table->foreign('kapal_id')->references('id')->on('katalog_kapals')->onDelete('cascade');
             $table->unsignedBigInteger('lokasi_sekarang');
-            $table->foreign('lokasi_sekarang')->references('id')->on('pelabuhans')->onDelete('cascade');
+            $table->foreign('lokasi_sekarang')->references('id')->on('katalog_pelabuhans')->onDelete('cascade');
             $table->unsignedBigInteger('status');
             $table->foreign('status')->references('id')->on('statuses')->onDelete('cascade');
             $table->timestamps();

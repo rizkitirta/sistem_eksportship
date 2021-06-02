@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('breadcrumb', 'Container')
+@section('breadcrumb', 'Pengiriman')
 @section('content')
 
     @if ($errors->any())
@@ -15,18 +15,20 @@
         <div class="col-12">
             <div class="card card-success shadow">
                 <div class="card-header">
-                    <h3 class="card-title">Data Container</h3>
+                    <h3 class="card-title">Data Pengiriman</h3>
                 </div>
                 <div class="card-body">
                     <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg">
                         Tambah Data
                     </button>
-                    <table class="table table-striped bordered " id="datatable"  width="100%">
+                    <table class="table table-striped bordered " id="datatable" width="100%">
                         <thead>
                             <tr>
-                                <th>Nama Container</th>
-                                <th>Jenis Container</th>
-                                <th>Isi Container</th>
+                                <th>Nama Kapal</th>
+                                <th>Asal</th>
+                                <th>Tujuan</th>
+                                <th>Qty Container</th>
+                                <th>Deskrispi</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -38,7 +40,7 @@
     </div>
 
     <div class="modal fade" id="modal-lg">
-        <div class="modal-dialog ">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah/Edit Data</h4>
@@ -54,26 +56,43 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="{{ route('container.store') }}" method="POST" id="form">
+                        <form action="{{ route('pengiriman.store') }}" method="POST" id="form">
                             <input type="hidden" name="id" id="id" value="">
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="container_id">Nama Container</label>
-                                    <select id="container_id" class="form-control" name="container_id">
-                                        <option value="" selected disabled>Pilih Container</option>
-                                        @foreach ($katalog_container as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_container }}</option>
+                                    <label for="kapal_id">Pilih Kapal</label>
+                                    <select id="kapal_id" class="form-control" name="kapal_id">
+                                        @foreach ($kapal as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nama_kapal }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="jenis_container">Jenis Container</label>
-                                    <input type="text" value="" class="form-control" id="jenis_container" name="jenis_container">
+                                    <label for="asal">Asal Pelabuhan </label>
+                                    <select id="asal" class="form-control" name="asal">
+                                        @foreach ($pelabuhan as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nama_pelabuhan }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="isi_container">Isi Container</label>
-                                    <input type="text" value="" class="form-control" id="isi_container" name="isi_container">
+                                    <label for="tujuan">Tujuan Pelabuhan</label>
+                                    <select id="tujuan" class="form-control" name="tujuan">
+                                        @foreach ($pelabuhan as $item)
+                                            <option value="{{ $item->id }}">{{ $item->nama_pelabuhan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="jumlah_container">Jumlah Container</label>
+                                    <input type="number" value="" class="form-control" id="jumlah_container"
+                                        name="jumlah_container">
+                                </div>
+                                <div class="form-group">
+                                    <label for="deskripsi">Deskripsi</label>
+                                    <textarea id="deskripsi" class="form-control" name="deskripsi" rows="3"></textarea>
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -113,19 +132,28 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('container.index') }}"
+                    url: "{{ route('pengiriman.index') }}"
                 },
-                columns: [{
-                        data: 'nama_container',
-                        name: 'nama_container'
+                columns: [
+                    {
+                        data: 'nama_kapal',
+                        name: 'nama_kapal'
                     },
                     {
-                        data: 'jenis_container',
-                        name: 'jenis_container'
+                        data: 'nama_pelabuhan',
+                        name: 'nama_pelabuhan'
                     },
                     {
-                        data: 'isi_container',
-                        name: 'isi_container'
+                        data: 'nama_pelabuhan',
+                        name: 'nama_pelabuhan'
+                    },
+                    {
+                        data: 'jumlah_container',
+                        name: 'jumlah_container'
+                    },
+                    {
+                        data: 'deskripsi',
+                        name: 'deskripsi'
                     },
                     {
                         data: 'aksi',
@@ -171,10 +199,10 @@
         //Edit
         $(document).on('click', '.edit', function() {
             $('#modal-lg').modal()
-            $('#form').attr('action', "{{ route('container.update') }}")
+            $('#form').attr('action', "{{ route('pengiriman.update') }}")
             let id = $(this).attr('id')
             $.ajax({
-                url: "{{ route('container.edit') }}",
+                url: "{{ route('pengiriman.edit') }}",
                 type: 'POST',
                 data: {
                     id: id,
@@ -183,10 +211,11 @@
                 success: function(res) {
                     console.log(res);
                     $('#id').val(res.id)
-                    $('#nama_container').val(res.nama_container)
-                    $('#ukuran_container').val(res.ukuran_container)
-                    $('#jenis_muatan').val(res.jenis_muatan)
-                    $('#isi_muatan').val(res.isi_muatan)
+                    $('#kapal_id').val(res.kapal_id)
+                    $('#asal').val(res.asal)
+                    $('#tujuan').val(res.tujuan)
+                    $('#jumlah_container').val(res.jumlah_container)
+                    $('#deskripsi').val(res.deskripsi)
                     $('#btn-tutup').click()
                     $('#datatable').DataTable().ajax.reload()
                 },
@@ -214,7 +243,7 @@
                 if (result.isConfirmed) {
                     let id = $(this).attr('id')
                     $.ajax({
-                        url: "{{ route('container.destroy') }}",
+                        url: "{{ route('pengiriman.destroy') }}",
                         type: 'POST',
                         data: {
                             id: id,

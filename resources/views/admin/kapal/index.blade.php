@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('breadcrumb', 'Container')
+@section('breadcrumb', 'Kapal')
 @section('content')
 
     @if ($errors->any())
@@ -15,7 +15,7 @@
         <div class="col-12">
             <div class="card card-success shadow">
                 <div class="card-header">
-                    <h3 class="card-title">Data Container</h3>
+                    <h3 class="card-title">Data Kapal</h3>
                 </div>
                 <div class="card-body">
                     <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg">
@@ -24,9 +24,12 @@
                     <table class="table table-striped bordered " id="datatable"  width="100%">
                         <thead>
                             <tr>
-                                <th>Nama Container</th>
-                                <th>Jenis Container</th>
-                                <th>Isi Container</th>
+                                <th>Nama Kapal</th>
+                                <th>Jenis Kapal</th>
+                                <th>Kecepatan</th>
+                                <th>Berat Muatan</th>
+                                <th>Daya Mesin</th>
+                                <th>Letak Mesin</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -38,7 +41,7 @@
     </div>
 
     <div class="modal fade" id="modal-lg">
-        <div class="modal-dialog ">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah/Edit Data</h4>
@@ -54,27 +57,41 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="{{ route('container.store') }}" method="POST" id="form">
+                        <form action="{{ route('kapal.store') }}" method="POST" id="form">
                             <input type="hidden" name="id" id="id" value="">
                             @csrf
                             <div class="card-body">
-                                <div class="form-group">
-                                    <label for="container_id">Nama Container</label>
-                                    <select id="container_id" class="form-control" name="container_id">
-                                        <option value="" selected disabled>Pilih Container</option>
-                                        @foreach ($katalog_container as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_container }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="jenis_container">Jenis Container</label>
-                                    <input type="text" value="" class="form-control" id="jenis_container" name="jenis_container">
-                                </div>
-                                <div class="form-group">
-                                    <label for="isi_container">Isi Container</label>
-                                    <input type="text" value="" class="form-control" id="isi_container" name="isi_container">
-                                </div>
+                               <div class="row">
+                                   <div class="col">
+                                    <div class="form-group">
+                                        <label for="nama_kapal">nama_kapal</label>
+                                        <input type="text" value="" class="form-control" id="nama_kapal"
+                                            name="nama_kapal">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="jenis_kapal">jenis_kapal</label>
+                                        <input type="text" value="" class="form-control" id="jenis_kapal" name="jenis_kapal">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kecepatan">Kecepatan</label>
+                                        <input type="text" value="" class="form-control" id="kecepatan" name="kecepatan">
+                                    </div>
+                                   </div>
+                                   <div class="col">
+                                    <div class="form-group">
+                                        <label for="berat_muatan">berat_muatan</label>
+                                        <input type="text" value="" class="form-control" id="berat_muatan" name="berat_muatan">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="daya_mesin">daya_mesin</label>
+                                        <input type="text" value="" class="form-control" id="daya_mesin" name="daya_mesin">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="letak_mesin">letak_mesin</label>
+                                        <input type="text" value="" class="form-control" id="letak_mesin" name="letak_mesin">
+                                    </div>
+                                   </div>
+                               </div>
                             </div>
                             <!-- /.card-body -->
 
@@ -113,19 +130,31 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('container.index') }}"
+                    url: "{{ route('kapal.index') }}"
                 },
                 columns: [{
-                        data: 'nama_container',
-                        name: 'nama_container'
+                        data: 'nama_kapal',
+                        name: 'nama_kapal'
                     },
                     {
-                        data: 'jenis_container',
-                        name: 'jenis_container'
+                        data: 'jenis_kapal',
+                        name: 'jenis_kapal'
                     },
                     {
-                        data: 'isi_container',
-                        name: 'isi_container'
+                        data: 'Kecepatan',
+                        name: 'Kecepatan'
+                    },
+                    {
+                        data: 'berat_muatan',
+                        name: 'berat_muatan'
+                    },
+                    {
+                        data: 'daya_mesin',
+                        name: 'daya_mesin'
+                    },
+                    {
+                        data: 'letak_mesin',
+                        name: 'letak_mesin'
                     },
                     {
                         data: 'aksi',
@@ -171,10 +200,10 @@
         //Edit
         $(document).on('click', '.edit', function() {
             $('#modal-lg').modal()
-            $('#form').attr('action', "{{ route('container.update') }}")
+            $('#form').attr('action', "{{ route('kapal.update') }}")
             let id = $(this).attr('id')
             $.ajax({
-                url: "{{ route('container.edit') }}",
+                url: "{{ route('kapal.edit') }}",
                 type: 'POST',
                 data: {
                     id: id,
@@ -183,10 +212,12 @@
                 success: function(res) {
                     console.log(res);
                     $('#id').val(res.id)
-                    $('#nama_container').val(res.nama_container)
-                    $('#ukuran_container').val(res.ukuran_container)
-                    $('#jenis_muatan').val(res.jenis_muatan)
-                    $('#isi_muatan').val(res.isi_muatan)
+                    $('#nama_kapal').val(res.nama_kapal)
+                    $('#jenis_kapal').val(res.jenis_kapal)
+                    $('#kecepatan').val(res.Kecepatan)
+                    $('#berat_muatan').val(res.berat_muatan)
+                    $('#daya_mesin').val(res.daya_mesin)
+                    $('#letak_mesin').val(res.letak_mesin)
                     $('#btn-tutup').click()
                     $('#datatable').DataTable().ajax.reload()
                 },
@@ -214,7 +245,7 @@
                 if (result.isConfirmed) {
                     let id = $(this).attr('id')
                     $.ajax({
-                        url: "{{ route('container.destroy') }}",
+                        url: "{{ route('kapal.destroy') }}",
                         type: 'POST',
                         data: {
                             id: id,

@@ -21,9 +21,10 @@
                     <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg">
                         Tambah Data
                     </button>
-                    <table class="table table-striped bordered " id="datatable">
+                    <table class="table table-striped bordered " id="datatable" width="100%">
                         <thead>
                             <tr>
+                                <th>Nama Pelabuhan</th>
                                 <th>Negara</th>
                                 <th>Lokasi</th>
                                 <th>Operator</th>
@@ -63,49 +64,51 @@
                             <input type="hidden" name="id" id="id" value="">
                             @csrf
                             <div class="card-body">
+                                <div class="form-group">
+                                    <label for="nama_pelabuhan">Nama Pelabuhan</label>
+                                    <input type="text" value="" class="form-control" id="nama_pelabuhan"
+                                        name="nama_pelabuhan">
+                                </div>
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="negara">Negara</label>
-                                            <input type="text" value="" class="form-control" id="negara"
-                                                placeholder="Indonesia" name="negara">
+                                            <input type="text" value="" class="form-control" id="negara" name="negara">
                                         </div>
                                         <div class="form-group">
                                             <label for="lokasi">Lokasi Pelabuhan</label>
-                                            <input type="text" value="" class="form-control" id="lokasi"
-                                                placeholder="Banten.." name="lokasi">
+                                            <input type="text" value="" class="form-control" id="lokasi" name="lokasi">
                                         </div>
                                         <div class="form-group">
                                             <label for="operator">Operator</label>
-                                            <input type="text" value="" class="form-control" id="operator"
-                                                placeholder="Indonesia" name="operator">
+                                            <input type="text" value="" class="form-control" id="operator" name="operator">
                                         </div>
                                         <div class="form-group">
                                             <label for="otoritas_pelabuhan">Otoritas Pelabuhan</label>
                                             <input type="text" value="" class="form-control" id="otoritas_pelabuhan"
-                                                placeholder="Indonesia" name="otoritas_pelabuhan">
+                                                name="otoritas_pelabuhan">
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label for="jenis_pelabuhan">Jenis pelabuhan</label>
                                             <input type="text" value="" class="form-control" id="jenis_pelabuhan"
-                                                placeholder="Indonesia" name="jenis_pelabuhan">
+                                                name="jenis_pelabuhan">
                                         </div>
                                         <div class="form-group">
                                             <label for="menghubungkan_ke">Menghubungkan Ke</label>
                                             <input type="text" value="" class="form-control" id="menghubungkan_ke"
-                                                placeholder="Indonesia" name="menghubungkan_ke">
+                                                name="menghubungkan_ke">
                                         </div>
                                         <div class="form-group">
                                             <label for="jenis_dermaga">Jenis Dermaga</label>
                                             <input type="text" value="" class="form-control" id="jenis_dermaga"
-                                                placeholder="Indonesia" name="jenis_dermaga">
+                                                name="jenis_dermaga">
                                         </div>
                                         <div class="form-group">
                                             <label for="kedatangan">Kedatangan</label>
                                             <input type="text" value="" class="form-control" id="kedatangan"
-                                                placeholder="Indonesia" name="kedatangan">
+                                                name="kedatangan">
                                         </div>
                                     </div>
                                 </div>
@@ -114,7 +117,10 @@
 
                             <div class="card-footer">
                                 <button type="reset" class="btn btn-danger float-right">Reset</button>
-                                <button type="submit" class="btn btn-success float-right mr-1">Save</button>
+                                <button type="submit" class="btn btn-success float-right mr-1">
+                                    <i class="fas fa-save"></i>
+                                    Save
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -147,6 +153,10 @@
                     url: "{{ route('pelabuhan.index') }}"
                 },
                 columns: [{
+                        data: 'nama_pelabuhan',
+                        name: 'nama_pelabuhan'
+                    },
+                    {
                         data: 'negara',
                         name: 'negara'
                     },
@@ -234,6 +244,7 @@
                 success: function(res) {
                     console.log(res);
                     $('#id').val(res.id)
+                    $('#nama_pelabuhan').val(res.nama_pelabuhan)
                     $('#negara').val(res.negara)
                     $('#lokasi').val(res.lokasi)
                     $('#operator').val(res.operator)
@@ -286,7 +297,7 @@
                     })
                     Swal.fire(
                         'Deleted!',
-                        'Your file has been deleted.',
+                        'Your data has been deleted.',
                         'success'
                     )
                 }

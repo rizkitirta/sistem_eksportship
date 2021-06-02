@@ -16,14 +16,11 @@ class CreateDataPengirimanTable extends Migration
         Schema::create('data_pengiriman', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kapal_id');
-            $table->foreign('kapal_id')->references('id')->on('kapals')->onDelete('cascade');
-            $table->unsignedBigInteger('asal');
-            $table->foreign('asal')->references('id')->on('pelabuhans')->onDelete('cascade');
-            $table->unsignedBigInteger('tujuan');
-            $table->foreign('tujuan')->references('id')->on('pelabuhans')->onDelete('cascade');
-            $table->integer('jumlah_container')->nullable();
-            $table->string('deskripsi')->nullable();
-
+            $table->foreign('kapal_id')->references('id')->on('katalog_kapals')->onDelete('cascade');
+            $table->unsignedBigInteger('pelabuhan_id');
+            $table->foreign('pelabuhan_id')->references('id')->on('katalog_pelabuhans')->onDelete('cascade');
+            $table->date('tgl_pengiriman');
+            $table->integer('total_container')->nullable();
             $table->timestamps();
         });
     }

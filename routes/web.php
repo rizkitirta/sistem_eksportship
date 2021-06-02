@@ -2,7 +2,12 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PelabuhanController;
+use App\Http\Controllers\Admin\KatalogContainerController;
 use App\Http\Controllers\Admin\ContainerController;
+use App\Http\Controllers\Admin\PengirimanController;
+use App\Http\Controllers\Admin\KapalController;
+use App\Http\Controllers\Admin\KatalogKapalController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +30,11 @@ Auth::routes();
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home', [DashboardController::class, 'index'])->name('home');
 
+Route::get('logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('logout');
+
 //Pelabuhan
 Route::get('/pelabuhan/index', [PelabuhanController::class, 'index'])->name('pelabuhan.index');
 Route::post('/pelabuhan/store', [PelabuhanController::class, 'store'])->name('pelabuhan.store');
@@ -32,11 +42,39 @@ Route::post('/pelabuhan/edit', [PelabuhanController::class, 'edit'])->name('pela
 Route::post('/pelabuhan/update', [PelabuhanController::class, 'update'])->name('pelabuhan.update');
 Route::post('/pelabuhan/destroy', [PelabuhanController::class, 'destroy'])->name('pelabuhan.destroy');
 
+//Katalog Container
+Route::get('/katalog-container/index', [KatalogContainerController::class, 'index'])->name('katalogContainer.index');
+Route::post('/katalog-container/store', [KatalogContainerController::class, 'store'])->name('katalogContainer.store');
+Route::post('/katalog-container/edit', [KatalogContainerController::class, 'edit'])->name('katalogContainer.edit');
+Route::post('/katalog-container/update', [KatalogContainerController::class, 'update'])->name('katalogContainer.update');
+Route::post('/katalog-container/destroy', [KatalogContainerController::class, 'destroy'])->name('katalogContainer.destroy');
+
 //Container
 Route::get('/container/index', [ContainerController::class, 'index'])->name('container.index');
 Route::post('/container/store', [ContainerController::class, 'store'])->name('container.store');
 Route::post('/container/edit', [ContainerController::class, 'edit'])->name('container.edit');
 Route::post('/container/update', [ContainerController::class, 'update'])->name('container.update');
 Route::post('/container/destroy', [ContainerController::class, 'destroy'])->name('container.destroy');
+
+//Katalog Kapal
+Route::get('/katalog-kapal/index', [KatalogKapalController::class, 'index'])->name('katalogKapal.index');
+Route::post('/katalog-kapal/store', [KatalogKapalController::class, 'store'])->name('katalogKapal.store');
+Route::post('/katalog-kapal/edit', [KatalogKapalController::class, 'edit'])->name('katalogKapal.edit');
+Route::post('/katalog-kapal/update', [KatalogKapalController::class, 'update'])->name('katalogKapal.update');
+Route::post('/katalog-kapal/destroy', [KatalogKapalController::class, 'destroy'])->name('katalogKapal.destroy');
+
+//Kapal
+Route::get('/kapal/index', [KapalController::class, 'index'])->name('kapal.index');
+Route::post('/kapal/store', [KapalController::class, 'store'])->name('kapal.store');
+Route::post('/kapal/edit', [KapalController::class, 'edit'])->name('kapal.edit');
+Route::post('/kapal/update', [KapalController::class, 'update'])->name('kapal.update');
+Route::post('/kapal/destroy', [KapalController::class, 'destroy'])->name('kapal.destroy');
+
+//Pengiriman
+Route::get('/pengiriman/index', [PengirimanController::class, 'index'])->name('pengiriman.index');
+Route::post('/pengiriman/store', [PengirimanController::class, 'store'])->name('pengiriman.store');
+Route::post('/pengiriman/edit', [PengirimanController::class, 'edit'])->name('pengiriman.edit');
+Route::post('/pengiriman/update', [PengirimanController::class, 'update'])->name('pengiriman.update');
+Route::post('/pengiriman/destroy', [PengirimanController::class, 'destroy'])->name('pengiriman.destroy');
 
 

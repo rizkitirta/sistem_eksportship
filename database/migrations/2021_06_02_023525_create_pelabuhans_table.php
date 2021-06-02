@@ -15,14 +15,10 @@ class CreatePelabuhansTable extends Migration
     {
         Schema::create('pelabuhans', function (Blueprint $table) {
             $table->id();
-            $table->string('negara');
-            $table->string('lokasi');
-            $table->string('operator');
-            $table->string('jenis_pelabuhan');
-            $table->string('otoritas_pelabuhan')->nullable();
-            $table->string('menghubungkan_ke');
-            $table->string('jenis_dermaga');
-            $table->string('kedatangan');
+            $table->unsignedBigInteger('pelabuhan_id');
+            $table->foreign('pelabuhan_id')->references('id')->on('katalog_pelabuhans')->onDelete('cascade');
+            $table->unsignedBigInteger('kapal_id');
+            $table->foreign('kapal_id')->references('id')->on('katalog_kapals')->onDelete('cascade');
             $table->timestamps();
         });
     }

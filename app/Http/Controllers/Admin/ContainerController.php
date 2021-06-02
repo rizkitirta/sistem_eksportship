@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Container;
+use App\Models\KatalogContainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,7 +19,8 @@ class ContainerController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Container::all();
+        $katalog_container = KatalogContainer::all();
+        $data = Container::join()->get();
         if ($request->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
@@ -30,7 +32,7 @@ class ContainerController extends Controller
                 ->make(true);
         }
 
-        return view('admin.kontainer.index', compact('data'));
+        return view('admin.kontainer.index', compact('data','katalog_container'));
     }
 
     /**
@@ -52,17 +54,15 @@ class ContainerController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'nama_container' => 'required|string',
-            'ukuran_container' => 'required|string',
-            'jenis_muatan' => 'required|string',
-            'isi_muatan' => 'required|string',
+            'container_id' => 'required|string',
+            'jenis_container' => 'required|string',
+            'isi_container' => 'required|string',
         ];
 
         $message = [
-            'nama_container.required' => 'Kolom negara tidak boleh kosong!',
-            'ukuran_container.required' => 'Kolom lokasi tidak boleh kosong!',
-            'jenis_muatan.required' => 'Kolom operator tidak boleh kosong!',
-            'isi_muatan.required' => 'Kolom otoritas pelabuhan ridak boleh kosong!',
+            'nama_container.required' => 'Kolom nama container tidak boleh kosong!',
+            'jenis_container.required' => 'Kolom jenis container tidak boleh kosong!',
+            'isi_container.required' => 'Kolom isi container pelabuhan ridak boleh kosong!',
         ];
 
         $validasi = Validator::make($request->all(), $rules, $message);
@@ -111,25 +111,15 @@ class ContainerController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'negara' => 'required|string',
-            'lokasi' => 'required|string',
-            'operator' => 'required|string',
-            'otoritas_pelabuhan' => 'required|string',
-            'jenis_pelabuhan' => 'required',
-            'menghubungkan_ke' => 'required',
-            'jenis_dermaga' => 'required',
-            'kedatangan' => 'required',
+            'container_id' => 'required|string',
+            'jenis_container' => 'required|string',
+            'isi_container' => 'required|string',
         ];
 
         $message = [
-            'negara.required' => 'Kolom negara tidak boleh kosong!',
-            'lokasi.required' => 'Kolom lokasi tidak boleh kosong!',
-            'operator.required' => 'Kolom operator tidak boleh kosong!',
-            'otoritas_pelabuhan.required' => 'Kolom otoritas pelabuhan ridak boleh kosong!',
-            'jenis_pelabuhan.required' => 'Kolom Jenis Pelabuhan tidak boleh kosong!',
-            'menghubungkan_ke.required' => 'Kolom Menghubungkan tidak boleh kosong!',
-            'jenis_dermaga.required' => 'Kolom Jenis Dermaga tidak boleh kosong!',
-            'kedatangan.required' => 'Kolom kedatangan tidak boleh kosong!',
+            'nama_container.required' => 'Kolom nama container tidak boleh kosong!',
+            'jenis_container.required' => 'Kolom jenis container tidak boleh kosong!',
+            'isi_container.required' => 'Kolom isi container pelabuhan ridak boleh kosong!',
         ];
 
         $validasi = Validator::make($request->all(), $rules, $message);
@@ -137,12 +127,13 @@ class ContainerController extends Controller
             return response()->json(['message' => $validasi->errors()->first()], 422);
         }
 
-        $data = Pelabuhan::find($request->id);
+
+        $data = Container::find($request->id);
         $data->update($request->all());
         if ($data) {
-            return response()->json(['message' => 'Data Berhasil Disimpan'], 200);
+            return response()->json(['message' => 'Data Berhasil Diupdate'], 200);
         } else {
-            return response()->json(['message' => 'Data Gagal Disimpan'], 422);
+            return response()->json(['message' => 'Data Gagal Diupdate'], 422);
         }
 
 
@@ -156,7 +147,7 @@ class ContainerController extends Controller
      */
     public function destroy(Request $request)
     {
-        $data = Pelabuhan::find($request->id);
+        $data = Container::find($request->id);
         $data->delete($data);
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Dihapus']);

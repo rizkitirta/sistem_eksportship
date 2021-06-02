@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pelabuhan;
+use App\Models\KatalogContainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use function GuzzleHttp\Promise\all;
 
-class PelabuhanController extends Controller
+class KatalogContainerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +18,11 @@ class PelabuhanController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Pelabuhan::all();
+        $data = KatalogContainer::all();
         if ($request->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
-                    $button = '<button class="edit btn btn-primary btn-sm mb-1" id="' . $data->id . '" name="edit" ><i class="fas fa-edit"></i></button>';
+                    $button = '<button class="edit btn btn-primary btn-sm mr-1" id="' . $data->id . '" name="edit" ><i class="fas fa-edit"></i></button>';
                     $button .= '<button class="hapus btn btn-danger btn-sm " id="' . $data->id . '" name="hapus"><i class="fas fa-trash-alt"></i></button>';
                     return $button;
                 })
@@ -30,7 +30,7 @@ class PelabuhanController extends Controller
                 ->make(true);
         }
 
-        return view('admin.pelabuhan.index', compact('data'));
+        return view('admin.kontainer.katalog', compact('data'));
     }
 
     /**
@@ -52,27 +52,11 @@ class PelabuhanController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'nama_pelabuhan' => 'required|string',
-            'negara' => 'required|string',
-            'lokasi' => 'required|string',
-            'operator' => 'required|string',
-            'otoritas_pelabuhan' => 'required|string',
-            'jenis_pelabuhan' => 'required',
-            'menghubungkan_ke' => 'required',
-            'jenis_dermaga' => 'required',
-            'kedatangan' => 'required',
+            'nama_container' => 'required|string',
         ];
 
         $message = [
-            'nama_pelabuhan.required' => 'Kolom nama tidak boleh kosong!',
-            'negara.required' => 'Kolom negara tidak boleh kosong!',
-            'lokasi.required' => 'Kolom lokasi tidak boleh kosong!',
-            'operator.required' => 'Kolom operator tidak boleh kosong!',
-            'otoritas_pelabuhan.required' => 'Kolom otoritas pelabuhan ridak boleh kosong!',
-            'jenis_pelabuhan.required' => 'Kolom Jenis Pelabuhan tidak boleh kosong!',
-            'menghubungkan_ke.required' => 'Kolom Menghubungkan tidak boleh kosong!',
-            'jenis_dermaga.required' => 'Kolom Jenis Dermaga tidak boleh kosong!',
-            'kedatangan.required' => 'Kolom kedatangan tidak boleh kosong!',
+            'nama_container.required' => 'Kolom nama container tidak boleh kosong!',
         ];
 
         $validasi = Validator::make($request->all(), $rules, $message);
@@ -80,7 +64,7 @@ class PelabuhanController extends Controller
             return response()->json(['message' => $validasi->errors()->first()], 422);
         }
 
-        $data = Pelabuhan::create($request->all());
+        $data = KatalogContainer::create($request->all());
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Disimpan'], 200);
         } else {
@@ -107,7 +91,7 @@ class PelabuhanController extends Controller
      */
     public function edit(Request $request)
     {
-        $data = Pelabuhan::find($request->id);
+        $data = KatalogContainer::find($request->id);
         return response()->json($data);
     }
 
@@ -121,39 +105,25 @@ class PelabuhanController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'nama_pelabuhan' => 'required|string',
-            'negara' => 'required|string',
-            'lokasi' => 'required|string',
-            'operator' => 'required|string',
-            'otoritas_pelabuhan' => 'required|string',
-            'jenis_pelabuhan' => 'required',
-            'menghubungkan_ke' => 'required',
-            'jenis_dermaga' => 'required',
-            'kedatangan' => 'required',
+            'nama_container' => 'required|string',
         ];
 
         $message = [
-            'nama_pelabuhan.required' => 'Kolom nama tidak boleh kosong!',
-            'negara.required' => 'Kolom negara tidak boleh kosong!',
-            'lokasi.required' => 'Kolom lokasi tidak boleh kosong!',
-            'operator.required' => 'Kolom operator tidak boleh kosong!',
-            'otoritas_pelabuhan.required' => 'Kolom otoritas pelabuhan ridak boleh kosong!',
-            'jenis_pelabuhan.required' => 'Kolom Jenis Pelabuhan tidak boleh kosong!',
-            'menghubungkan_ke.required' => 'Kolom Menghubungkan tidak boleh kosong!',
-            'jenis_dermaga.required' => 'Kolom Jenis Dermaga tidak boleh kosong!',
-            'kedatangan.required' => 'Kolom kedatangan tidak boleh kosong!',
+            'nama_container.required' => 'Kolom nama container tidak boleh kosong!',
         ];
+
         $validasi = Validator::make($request->all(), $rules, $message);
         if ($validasi->fails()) {
             return response()->json(['message' => $validasi->errors()->first()], 422);
         }
 
-        $data = Pelabuhan::find($request->id);
+
+        $data = KatalogContainer::find($request->id);
         $data->update($request->all());
         if ($data) {
-            return response()->json(['message' => 'Data Berhasil Disimpan'], 200);
+            return response()->json(['message' => 'Data Berhasil Diupdate'], 200);
         } else {
-            return response()->json(['message' => 'Data Gagal Disimpan'], 422);
+            return response()->json(['message' => 'Data Gagal Diupdate'], 422);
         }
 
 
@@ -167,7 +137,7 @@ class PelabuhanController extends Controller
      */
     public function destroy(Request $request)
     {
-        $data = Pelabuhan::find($request->id);
+        $data = KatalogContainer::find($request->id);
         $data->delete($data);
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Dihapus']);

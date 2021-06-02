@@ -15,21 +15,10 @@
                     alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">{{ Auth::user()->name }}</a>
             </div>
         </div>
 
-        <!-- SidebarSearch Form -->
-        <div class="form-inline">
-            <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -37,57 +26,86 @@
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
                         <p>
-                            Master Pelabuhan
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('pelabuhan.index') }}" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Tambah Pelabuhan</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>list Pelabuhan</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link ">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Master Container
+                            Container
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('container.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Tambah Container</p>
+                                <i class="fas fa-box-open nav-icon"></i>
+                                <p>Data Container</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Inactive Page</p>
+                            <a href="{{ route('katalogContainer.index') }}" class="nav-link">
+                                <i class="fas fa-box-open nav-icon"></i>
+                                <p>Katalog Container</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Kapal
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('kapal.index') }}" class="nav-link">
+                                <i class="fas fa-box-open nav-icon"></i>
+                                <p>Data Kapal</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('katalogKapal.index') }}" class="nav-link">
+                                <i class="fas fa-box-open nav-icon"></i>
+                                <p>Katalog Kapal</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Pelabuhan
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('pelabuhan.index') }}" class="nav-link ">
+                                <i class="far fa-compass fa-4x nav-icon "></i>
+                                <p>Data Pelabuhan</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('kapal.index') }}" class="nav-link">
+                                <i class="fas fa-box-open nav-icon"></i>
+                                <p>Data Kapal</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('pengiriman.index') }}" class="nav-link">
+                                <i class="fas fa-box-open nav-icon"></i>
+                                <p>Data Pengiriman</p>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                    <a href="{{ route('logout') }}" class="nav-link">
+                        <i class="fas fa-sign-out-alt nav-icon"></i>
                         <p>
-                            Simple Link
-                            <span class="right badge badge-danger">New</span>
+                            Logout
                         </p>
                     </a>
                 </li>

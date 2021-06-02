@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContainersTable extends Migration
+class CreateKatalogKapalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateContainersTable extends Migration
      */
     public function up()
     {
-        Schema::create('containers', function (Blueprint $table) {
+        Schema::create('katalog_kapals', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('container_id');
-            $table->foreign('container_id')->references('id')->on('katalog_containers')->onDelete('cascade');
-            $table->string('jenis_container');
-            $table->string('isi_container');
+            $table->string('nama_kapal');
+            $table->string('jenis_kapal');
+            $table->string('kapasitas_kapal');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateContainersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('containers');
+        Schema::dropIfExists('katalog_kapals');
     }
 }
