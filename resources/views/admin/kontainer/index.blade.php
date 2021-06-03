@@ -21,7 +21,7 @@
                     <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg">
                         Tambah Data
                     </button>
-                    <table class="table table-striped bordered " id="datatable"  width="100%">
+                    <table class="table table-striped bordered " id="datatable" width="100%">
                         <thead>
                             <tr>
                                 <th>Nama Container</th>
@@ -63,17 +63,19 @@
                                     <select id="container_id" class="form-control" name="container_id">
                                         <option value="" selected disabled>Pilih Container</option>
                                         @foreach ($katalog_container as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_container }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->nama_container }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="jenis_container">Jenis Container</label>
-                                    <input type="text" value="" class="form-control" id="jenis_container" name="jenis_container">
+                                    <input type="text" value="" class="form-control" id="jenis_container"
+                                        name="jenis_container">
                                 </div>
                                 <div class="form-group">
                                     <label for="isi_container">Isi Container</label>
-                                    <input type="text" value="" class="form-control" id="isi_container" name="isi_container">
+                                    <input type="text" value="" class="form-control" id="isi_container"
+                                        name="isi_container">
                                 </div>
                             </div>
                             <!-- /.card-body -->

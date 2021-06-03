@@ -73,7 +73,7 @@
     <script>
         $(document).ready(function() {
 
-             //Hide Button Form Update
+            //Hide Button Form Update
             $('#btn-update').hide()
 
             //Reload Datatable

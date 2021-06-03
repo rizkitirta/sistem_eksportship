@@ -32,7 +32,7 @@ class ContainerController extends Controller
                 ->make(true);
         }
 
-        return view('admin.kontainer.index', compact('data','katalog_container'));
+        return view('admin.kontainer.index', compact('data', 'katalog_container'));
     }
 
     /**
@@ -135,8 +135,6 @@ class ContainerController extends Controller
         } else {
             return response()->json(['message' => 'Data Gagal Diupdate'], 422);
         }
-
-
     }
 
     /**

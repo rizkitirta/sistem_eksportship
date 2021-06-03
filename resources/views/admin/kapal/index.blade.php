@@ -21,7 +21,7 @@
                     <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg">
                         Tambah Data
                     </button>
-                    <table class="table table-striped bordered " id="datatable"  width="100%">
+                    <table class="table table-striped bordered " id="datatable" width="100%">
                         <thead>
                             <tr>
                                 <th>Nama Kapal</th>
@@ -62,7 +62,7 @@
                                     <select id="kapal_id" class="form-control" name="kapal_id">
                                         <option value="" disabled selected>Pilih Kapal</option>
                                         @foreach ($kapal as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_kapal }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->nama_kapal }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -71,7 +71,7 @@
                                     <select id="container_id" class="form-control" name="container_id">
                                         <option value="" disabled selected>Pilih Container</option>
                                         @foreach ($container as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_container }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->nama_container }}</option>
                                         @endforeach
                                     </select>
                                 </div>

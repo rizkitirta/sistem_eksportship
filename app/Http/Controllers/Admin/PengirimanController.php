@@ -35,7 +35,7 @@ class PengirimanController extends Controller
                 ->make(true);
         }
 
-        return view('admin.pengiriman.index', compact('data','kapal','pelabuhan'));
+        return view('admin.pengiriman.index', compact('data', 'kapal', 'pelabuhan'));
     }
 
     /**
@@ -145,8 +145,6 @@ class PengirimanController extends Controller
         } else {
             return response()->json(['message' => 'Data Gagal Diupdate!'], 422);
         }
-
-
     }
 
     /**
@@ -178,5 +176,4 @@ class PengirimanController extends Controller
             return response()->json(['message' => 'Status Gagal Diupdate!'], 422);
         }
     }
-
 }

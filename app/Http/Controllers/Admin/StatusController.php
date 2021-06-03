@@ -131,8 +131,6 @@ class StatusController extends Controller
         } else {
             return response()->json(['message' => 'Data Gagal Diupdate!'], 422);
         }
-
-
     }
 
     /**

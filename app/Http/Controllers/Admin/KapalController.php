@@ -34,7 +34,7 @@ class KapalController extends Controller
                 ->make(true);
         }
 
-        return view('admin.kapal.index', compact('data','kapal','container'));
+        return view('admin.kapal.index', compact('data', 'kapal', 'container'));
     }
 
     /**

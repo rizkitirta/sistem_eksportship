@@ -18,7 +18,8 @@
                     <h3 class="card-title">Data Pelabuhan</h3>
                 </div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg" id="btn-tambah">
+                    <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg"
+                        id="btn-tambah">
                         Tambah Data
                     </button>
                     <table class="table table-striped bordered " id="datatable" width="100%">
@@ -113,7 +114,7 @@
             loadData()
 
             //Reset Form
-            $('#btn-tambah').on('click', function () {
+            $('#btn-tambah').on('click', function() {
                 $('form')[0].reset()
                 $('form').attr('action', "{{ route('pelabuhan.store') }}")
                 $('#id').val('')

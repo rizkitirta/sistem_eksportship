@@ -34,7 +34,7 @@ class PelabuhanController extends Controller
                 ->make(true);
         }
 
-        return view('admin.pelabuhan.index', compact('data','kapal','pelabuhan'));
+        return view('admin.pelabuhan.index', compact('data', 'kapal', 'pelabuhan'));
     }
 
     /**
@@ -138,8 +138,6 @@ class PelabuhanController extends Controller
         } else {
             return response()->json(['message' => 'Data Gagal Diupdate!'], 422);
         }
-
-
     }
 
     /**

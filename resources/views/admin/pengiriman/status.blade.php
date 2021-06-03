@@ -60,13 +60,11 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="status_code">Code Status</label>
-                                    <input type="number" value="" class="form-control" id="status_code"
-                                        name="status_code">
+                                    <input type="number" value="" class="form-control" id="status_code" name="status_code">
                                 </div>
                                 <div class="form-group">
                                     <label for="status_name">Nama Status</label>
-                                    <input type="text" value="" class="form-control" id="status_name"
-                                        name="status_name">
+                                    <input type="text" value="" class="form-control" id="status_name" name="status_name">
                                 </div>
                             </div>
                             <!-- /.card-body -->
