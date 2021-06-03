@@ -18,12 +18,14 @@ class Pengiriman extends Model
     public static function join()
     {
        $data = DB::table('data_pengiriman')
-            ->join('kapals', 'data_pengiriman.kapal_id', 'kapals.id')
-            ->join('pelabuhans', 'data_pengiriman.asal', 'pelabuhans.id')
+            ->join('katalog_kapals', 'data_pengiriman.kapal_id', 'katalog_kapals.id')
+            ->join('katalog_pelabuhans', 'data_pengiriman.pelabuhan_id', 'katalog_pelabuhans.id')
+            ->join('statuses', 'data_pengiriman.status', 'statuses.status_code')
             ->select(
                 'data_pengiriman.*',
-                'kapals.nama_kapal',
-                'pelabuhans.nama_pelabuhan',
+                'katalog_kapals.nama_kapal',
+                'katalog_pelabuhans.nama_pelabuhan',
+                'statuses.status_name'
             )->get();
 
         return $data;

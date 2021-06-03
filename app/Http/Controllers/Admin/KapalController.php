@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kapal;
+use App\Models\KatalogContainer;
+use App\Models\KatalogKapal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,7 +20,9 @@ class KapalController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Kapal::all();
+        $kapal = KatalogKapal::all();
+        $container = KatalogContainer::all();
+        $data = Kapal::join()->get();
         if ($request->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
@@ -30,7 +34,7 @@ class KapalController extends Controller
                 ->make(true);
         }
 
-        return view('admin.kapal.index', compact('data'));
+        return view('admin.kapal.index', compact('data','kapal','container'));
     }
 
     /**
@@ -52,21 +56,18 @@ class KapalController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'nama_kapal' => 'required|string',
-            'jenis_kapal' => 'required|string',
-            'kecepatan' => 'required|string',
-            'berat_muatan' => 'required|string',
-            'daya_mesin' => 'required|string',
-            'letak_mesin' => 'required|string',
+            'kapal_id' => 'required|string',
+            'container_id' => 'required|string',
+            'quantity' => 'required|integer',
+
         ];
 
         $message = [
-            'nama_kapal.required' => 'Kolom nama tidak boleh kosong!',
-            'jenis_kapal.required' => 'Kolom jenis tidak boleh kosong!',
-            'kecepatan.required' => 'Kolom kecepatan tidak boleh kosong!',
-            'berat_muatan.required' => 'Kolom berat pelabuhan tidak boleh kosong!',
-            'daya_mesin.required' => 'Kolom daya pelabuhan tidak boleh kosong!',
-            'letak_mesin.required' => 'Kolom letak pelabuhan tidak boleh kosong!',
+            'kapal_id.required' => 'Kolom kapal tidak boleh kosong!',
+            'container_id.required' => 'Kolom container tidak boleh kosong!',
+            'quantity.required' => 'Kolom quantity tidak boleh kosong!',
+            'quantity.integer' => 'Kolom quantity berupa angka!',
+
         ];
 
         $validasi = Validator::make($request->all(), $rules, $message);
@@ -115,21 +116,18 @@ class KapalController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'nama_kapal' => 'required|string',
-            'jenis_kapal' => 'required|string',
-            'kecepatan' => 'required|string',
-            'berat_muatan' => 'required|string',
-            'daya_mesin' => 'required|string',
-            'letak_mesin' => 'required|string',
+            'kapal_id' => 'required|string',
+            'container_id' => 'required|string',
+            'quantity' => 'required|integer',
+
         ];
 
         $message = [
-            'nama_kapal.required' => 'Kolom nama tidak boleh kosong!',
-            'jenis_kapal.required' => 'Kolom jenis tidak boleh kosong!',
-            'kecepatan.required' => 'Kolom kecepatan tidak boleh kosong!',
-            'berat_muatan.required' => 'Kolom berat pelabuhan tidak boleh kosong!',
-            'daya_mesin.required' => 'Kolom daya pelabuhan tidak boleh kosong!',
-            'letak_mesin.required' => 'Kolom letak pelabuhan tidak boleh kosong!',
+            'kapal_id.required' => 'Kolom kapal tidak boleh kosong!',
+            'container_id.required' => 'Kolom container tidak boleh kosong!',
+            'quantity.required' => 'Kolom quantity tidak boleh kosong!',
+            'quantity.integer' => 'Kolom quantity berupa angka!',
+
         ];
 
         $validasi = Validator::make($request->all(), $rules, $message);
@@ -140,12 +138,10 @@ class KapalController extends Controller
         $data = Kapal::find($request->id);
         $data->update($request->all());
         if ($data) {
-            return response()->json(['message' => 'Data Berhasil Disimpan'], 200);
+            return response()->json(['message' => 'Data Berhasil Diupdate!'], 200);
         } else {
-            return response()->json(['message' => 'Data Gagal Disimpan'], 422);
+            return response()->json(['message' => 'Data Gagal Diupdate!'], 422);
         }
-
-
     }
 
     /**

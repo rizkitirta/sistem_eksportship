@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kapal;
-use App\Models\Pelabuhan;
+use App\Models\KatalogKapal;
+use App\Models\KatalogPelabuhan;
 use App\Models\Pengiriman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -20,13 +20,14 @@ class PengirimanController extends Controller
      */
     public function index(Request $request)
     {
-        $kapal = Kapal::all();
-        $pelabuhan = Pelabuhan::all();
+        $pelabuhan = KatalogPelabuhan::all();
+        $kapal = KatalogKapal::all();
         $data = Pengiriman::join();
         if ($request->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
-                    $button = '<button class="edit btn btn-primary btn-sm mr-1" id="' . $data->id . '" name="edit" ><i class="fas fa-edit"></i></button>';
+                    $button = '<button class="kirim btn btn-danger btn-sm mr-1" id="' . $data->id . '" name="kirim" >Update Status Pengiriman</i></button>';
+                    $button .= '<button class="edit btn btn-primary btn-sm mr-1" id="' . $data->id . '" name="edit" ><i class="fas fa-edit"></i></button>';
                     $button .= '<button class="hapus btn btn-danger btn-sm " id="' . $data->id . '" name="hapus"><i class="fas fa-trash-alt"></i></button>';
                     return $button;
                 })
@@ -56,19 +57,18 @@ class PengirimanController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'kapal_id' => 'required|string',
-            'asal' => 'required|string',
-            'tujuan' => 'required|string',
-            'jumlah_container' => 'required|integer',
+            'pelabuhan_id' => 'required|integer',
+            'kapal_id' => 'required|integer',
+            'qty_kapal' => 'required|string',
+            'tgl_pengiriman' => 'required|string',
             'deskripsi' => 'required|string',
         ];
 
         $message = [
+            'pelabuhan_id.required' => 'Kolom Pelabuhan tidak boleh kosong!',
             'kapal_id.required' => 'Kolom kapal tidak boleh kosong!',
-            'asal.required' => 'Kolom asal tidak boleh kosong!',
-            'tujuan.required' => 'Kolom tujuan tidak boleh kosong!',
-            'jumlah_container.required' => 'Kolom jumlah pelabuhan tidak boleh kosong!',
-            'jumlah_container.integer' => 'Kolom jumlah berupa angka!',
+            'qty_kapal.required' => 'Kolom qty tidak boleh kosong!',
+            'tgl_pengiriman.required' => 'Kolom tgl pengiriman tidak boleh kosong!',
             'deskripsi.required' => 'Kolom deskripsi pelabuhan tidak boleh kosong!',
         ];
 
@@ -118,18 +118,18 @@ class PengirimanController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'kapal_id' => 'required|string',
-            'asal' => 'required|string',
-            'tujuan' => 'required|string',
-            'jumlah_container' => 'required|string',
+            'pelabuhan_id' => 'required|integer',
+            'kapal_id' => 'required|integer',
+            'qty_kapal' => 'required|string',
+            'tgl_pengiriman' => 'required|string',
             'deskripsi' => 'required|string',
         ];
 
         $message = [
+            'pelabuhan_id.required' => 'Kolom Pelabuhan tidak boleh kosong!',
             'kapal_id.required' => 'Kolom kapal tidak boleh kosong!',
-            'asal.required' => 'Kolom asal tidak boleh kosong!',
-            'tujuan.required' => 'Kolom tujuan tidak boleh kosong!',
-            'jumlah_container.required' => 'Kolom jumlah pelabuhan tidak boleh kosong!',
+            'qty_kapal.required' => 'Kolom qty tidak boleh kosong!',
+            'tgl_pengiriman.required' => 'Kolom tgl pengiriman tidak boleh kosong!',
             'deskripsi.required' => 'Kolom deskripsi pelabuhan tidak boleh kosong!',
         ];
 
@@ -141,9 +141,9 @@ class PengirimanController extends Controller
         $data = Pengiriman::find($request->id);
         $data->update($request->all());
         if ($data) {
-            return response()->json(['message' => 'Data Berhasil Disimpan'], 200);
+            return response()->json(['message' => 'Data Berhasil Diupdate!'], 200);
         } else {
-            return response()->json(['message' => 'Data Gagal Disimpan'], 422);
+            return response()->json(['message' => 'Data Gagal Diupdate!'], 422);
         }
 
 
@@ -165,4 +165,18 @@ class PengirimanController extends Controller
             return response()->json(['message' => 'Data Gagal Dihapus']);
         }
     }
+
+    public function updateStatus(Request $request)
+    {
+        $data = Pengiriman::find($request->id);
+        $old = $data->status;
+        $new = $old + 1;
+        $data->update(['status' => $new]);
+        if ($data) {
+            return response()->json(['message' => 'Status Berhasil Diupdate!'], 200);
+        } else {
+            return response()->json(['message' => 'Status Gagal Diupdate!'], 422);
+        }
+    }
+
 }

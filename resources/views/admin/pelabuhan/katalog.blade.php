@@ -11,6 +11,7 @@
             </ul>
         </div>
     @endif
+
     <div class="row">
         <div class="col-12">
             <div class="card card-success shadow">
@@ -18,15 +19,17 @@
                     <h3 class="card-title">Data Pelabuhan</h3>
                 </div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg" id="btn-tambah">
+                    <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg">
                         Tambah Data
                     </button>
                     <table class="table table-striped bordered " id="datatable" width="100%">
                         <thead>
                             <tr>
                                 <th>Nama Pelabuhan</th>
-                                <th>Nama Kapal</th>
-                                <th>Qty Kapal</th>
+                                <th>Lokasi Pelabuhan</th>
+                                <th>Jenis Pelabuhan</th>
+                                <th>Menghubungkan Ke</th>
+                                <th>Kedatangan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -38,7 +41,7 @@
     </div>
 
     <div class="modal fade" id="modal-lg">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah/Edit Data</h4>
@@ -54,31 +57,40 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="{{ route('pelabuhan.store') }}" method="POST" id="form">
+                        <form action="{{ route('katalogPelabuhan.store') }}" method="POST" id="form">
                             <input type="hidden" name="id" id="id" value="">
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="pelabuhan_id">Nama Pelabuhan</label>
-                                    <select id="pelabuhan_id" class="form-control" name="pelabuhan_id">
-                                        <option value="" selected disabled>Pilih Pelabuhan</option>
-                                        @foreach ($pelabuhan as $item)
-                                            <option value="{{ $item->id }}">{{ $item->nama_pelabuhan }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="nama_pelabuhan">Nama Pelabuhan</label>
+                                    <input type="text" value="" class="form-control" id="nama_pelabuhan"
+                                        name="nama_pelabuhan">
                                 </div>
-                                <div class="form-group">
-                                    <label for="kapal_id">Nama Kapal</label>
-                                    <select id="kapal_id" class="form-control" name="kapal_id">
-                                        <option value="" selected disabled>Pilih kapal</option>
-                                        @foreach ($kapal as $item)
-                                            <option value="{{ $item->id }}">{{ $item->nama_kapal }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="quantity">Qty Kapal</label>
-                                    <input id="quantity" class="form-control" type="number" name="quantity">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="lokasi_pelabuhan">Lokasi_pelabuhan</label>
+                                            <input type="text" value="" class="form-control" id="lokasi_pelabuhan"
+                                                name="lokasi_pelabuhan">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="jenis_pelabuhan">Jenis pelabuhan</label>
+                                            <input type="text" value="" class="form-control" id="jenis_pelabuhan"
+                                                name="jenis_pelabuhan">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="menghubungkan_ke">Menghubungkan Ke</label>
+                                            <input type="text" value="" class="form-control" id="menghubungkan_ke"
+                                                name="menghubungkan_ke">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kedatangan_kapal">Kedatangan Kapal</label>
+                                            <input type="text" value="" class="form-control" id="kedatangan_kapal"
+                                                name="kedatangan_kapal">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -111,13 +123,6 @@
     <script>
         $(document).ready(function() {
             loadData()
-
-            //Reset Form
-            $('#btn-tambah').on('click', function () {
-                $('form')[0].reset()
-                $('form').attr('action', "{{ route('pelabuhan.store') }}")
-                $('#id').val('')
-            })
         })
 
         function loadData() {
@@ -125,19 +130,27 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('pelabuhan.index') }}"
+                    url: "{{ route('katalogPelabuhan.index') }}"
                 },
                 columns: [{
                         data: 'nama_pelabuhan',
                         name: 'nama_pelabuhan'
                     },
                     {
-                        data: 'nama_kapal',
-                        name: 'nama_kapal'
+                        data: 'lokasi_pelabuhan',
+                        name: 'lokasi_pelabuhan'
                     },
                     {
-                        data: 'quantity',
-                        name: 'quantity'
+                        data: 'jenis_pelabuhan',
+                        name: 'jenis_pelabuhan'
+                    },
+                    {
+                        data: 'menghubungkan_ke',
+                        name: 'menghubungkan_ke'
+                    },
+                    {
+                        data: 'kedatangan_kapal',
+                        name: 'kedatangan_kapal'
                     },
                     {
                         data: 'aksi',
@@ -183,10 +196,10 @@
         //Edit
         $(document).on('click', '.edit', function() {
             $('#modal-lg').modal()
-            $('#form').attr('action', "{{ route('pelabuhan.update') }}")
+            $('#form').attr('action', "{{ route('katalogPelabuhan.update') }}")
             let id = $(this).attr('id')
             $.ajax({
-                url: "{{ route('pelabuhan.edit') }}",
+                url: "{{ route('katalogPelabuhan.edit') }}",
                 type: 'POST',
                 data: {
                     id: id,
@@ -195,9 +208,11 @@
                 success: function(res) {
                     console.log(res);
                     $('#id').val(res.id)
-                    $('#pelabuhan_id').val(res.pelabuhan_id)
-                    $('#kapal_id').val(res.kapal_id)
-                    $('#quantity').val(res.quantity)
+                    $('#nama_pelabuhan').val(res.nama_pelabuhan)
+                    $('#lokasi_pelabuhan').val(res.lokasi_pelabuhan)
+                    $('#jenis_pelabuhan').val(res.jenis_pelabuhan)
+                    $('#menghubungkan_ke').val(res.menghubungkan_ke)
+                    $('#kedatangan_kapal').val(res.kedatangan_kapal)
                     $('#btn-tutup').click()
                     $('#datatable').DataTable().ajax.reload()
                 },
@@ -225,7 +240,7 @@
                 if (result.isConfirmed) {
                     let id = $(this).attr('id')
                     $.ajax({
-                        url: "{{ route('pelabuhan.destroy') }}",
+                        url: "{{ route('katalogPelabuhan.destroy') }}",
                         type: 'POST',
                         data: {
                             id: id,

@@ -18,17 +18,19 @@
                     <h3 class="card-title">Data Pengiriman</h3>
                 </div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg">
+                    <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg"
+                        id="btn-tambah">
                         Tambah Data
                     </button>
                     <table class="table table-striped bordered " id="datatable" width="100%">
-                        <thead>
+                        <thead class="text-center">
                             <tr>
+                                <th>Pelabuhan</th>
                                 <th>Nama Kapal</th>
-                                <th>Asal</th>
-                                <th>Tujuan</th>
-                                <th>Qty Container</th>
+                                <th>Qty Kapal</th>
+                                <th>Tgl Pengiriman</th>
                                 <th>Deskrispi</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -40,7 +42,7 @@
     </div>
 
     <div class="modal fade" id="modal-lg">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah/Edit Data</h4>
@@ -61,39 +63,45 @@
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="kapal_id">Pilih Kapal</label>
-                                    <select id="kapal_id" class="form-control" name="kapal_id">
-                                        @foreach ($kapal as $item)
-                                            <option value="{{ $item->id }}">{{ $item->nama_kapal }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="asal">Asal Pelabuhan </label>
-                                    <select id="asal" class="form-control" name="asal">
+                                    <label for="pelabuhan_id">Pelabuhan </label>
+                                    <select id="pelabuhan_id" class="form-control" name="pelabuhan_id">
+                                        <option value="" selected disabled>Pilih Pelabuhan</option>
                                         @foreach ($pelabuhan as $item)
                                             <option value="{{ $item->id }}">{{ $item->nama_pelabuhan }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="tujuan">Tujuan Pelabuhan</label>
-                                    <select id="tujuan" class="form-control" name="tujuan">
-                                        @foreach ($pelabuhan as $item)
-                                            <option value="{{ $item->id }}">{{ $item->nama_pelabuhan }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="kapal_id">Pilih Kapal</label>
+                                            <select id="kapal_id" class="form-control" name="kapal_id">
+                                                <option value="" selected disabled>Pilih Kapal</option>
+                                                @foreach ($kapal as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->nama_kapal }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="qty_kapal">Qty Kapal</label>
+                                            <input type="number" value="" class="form-control" id="qty_kapal"
+                                                name="qty_kapal">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="tgl_pengiriman">Tanggal Pengiriman</label>
+                                            <input type="date" value="" class="form-control" id="tgl_pengiriman"
+                                                name="tgl_pengiriman">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="deskripsi">Deskripsi</label>
+                                            <textarea id="deskripsi" class="form-control" name="deskripsi"
+                                                rows="3"></textarea>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="jumlah_container">Jumlah Container</label>
-                                    <input type="number" value="" class="form-control" id="jumlah_container"
-                                        name="jumlah_container">
-                                </div>
-                                <div class="form-group">
-                                    <label for="deskripsi">Deskripsi</label>
-                                    <textarea id="deskripsi" class="form-control" name="deskripsi" rows="3"></textarea>
-                                </div>
                             </div>
                             <!-- /.card-body -->
 
@@ -125,6 +133,13 @@
     <script>
         $(document).ready(function() {
             loadData()
+
+            //reset form
+            $('#btn-tambah').on('click', function() {
+                $('#form').attr('action', "{{ route('pengiriman.store') }}")
+                $('#form')[0].reset()
+                $('#id').val('')
+            })
         })
 
         function loadData() {
@@ -134,26 +149,29 @@
                 ajax: {
                     url: "{{ route('pengiriman.index') }}"
                 },
-                columns: [
+                columns: [{
+                        data: 'nama_pelabuhan',
+                        name: 'nama_pelabuhan'
+                    },
                     {
                         data: 'nama_kapal',
                         name: 'nama_kapal'
                     },
                     {
-                        data: 'nama_pelabuhan',
-                        name: 'nama_pelabuhan'
+                        data: 'qty_kapal',
+                        name: 'qty_kapal'
                     },
                     {
-                        data: 'nama_pelabuhan',
-                        name: 'nama_pelabuhan'
-                    },
-                    {
-                        data: 'jumlah_container',
-                        name: 'jumlah_container'
+                        data: 'tgl_pengiriman',
+                        name: 'tgl_pengiriman'
                     },
                     {
                         data: 'deskripsi',
                         name: 'deskripsi'
+                    },
+                    {
+                        data: 'status_name',
+                        name: 'status_name'
                     },
                     {
                         data: 'aksi',
@@ -211,12 +229,42 @@
                 success: function(res) {
                     console.log(res);
                     $('#id').val(res.id)
+                    $('#pelabuhan_id').val(res.pelabuhan_id)
                     $('#kapal_id').val(res.kapal_id)
-                    $('#asal').val(res.asal)
-                    $('#tujuan').val(res.tujuan)
-                    $('#jumlah_container').val(res.jumlah_container)
+                    $('#qty_kapal').val(res.qty_kapal)
+                    $('#tgl_pengiriman').val(res.tgl_pengiriman)
                     $('#deskripsi').val(res.deskripsi)
                     $('#btn-tutup').click()
+                    $('#datatable').DataTable().ajax.reload()
+                },
+                error: function(xhr) {
+                    console.log(xhr);
+                    Swal.fire({
+                        icon: 'error',
+                        title: xhr.responseJSON.message,
+                    })
+                }
+            })
+        })
+
+        //update status
+        $(document).on('click', '.kirim', function() {
+            let id = $(this).attr('id')
+            $.ajax({
+                url: "{{ route('pengiriman.status') }}",
+                type: 'POST',
+                data: {
+                    id: id,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(res) {
+                    console.log(res);
+                    Swal.fire({
+                        icon: 'success',
+                        title: res.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                     $('#datatable').DataTable().ajax.reload()
                 },
                 error: function(xhr) {

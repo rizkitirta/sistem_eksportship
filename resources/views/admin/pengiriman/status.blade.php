@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('breadcrumb', 'Pelabuhan')
+@section('breadcrumb', 'Status')
 @section('content')
 
     @if ($errors->any())
@@ -15,18 +15,18 @@
         <div class="col-12">
             <div class="card card-success shadow">
                 <div class="card-header">
-                    <h3 class="card-title">Data Pelabuhan</h3>
+                    <h3 class="card-title">Data Pengiriman</h3>
                 </div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg" id="btn-tambah">
+                    <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-lg"
+                        id="btn-tambah">
                         Tambah Data
                     </button>
                     <table class="table table-striped bordered " id="datatable" width="100%">
                         <thead>
                             <tr>
-                                <th>Nama Pelabuhan</th>
-                                <th>Nama Kapal</th>
-                                <th>Qty Kapal</th>
+                                <th>Code</th>
+                                <th>Nama Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -50,35 +50,23 @@
                     <!-- general form elements -->
                     <div class="card card-success">
                         <div class="card-header">
-                            <h3 class="card-title">Form</h3>
+                            <h3 class="card-title">Form Data</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="{{ route('pelabuhan.store') }}" method="POST" id="form">
+                        <form action="{{ route('status.store') }}" method="POST" id="form">
                             <input type="hidden" name="id" id="id" value="">
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="pelabuhan_id">Nama Pelabuhan</label>
-                                    <select id="pelabuhan_id" class="form-control" name="pelabuhan_id">
-                                        <option value="" selected disabled>Pilih Pelabuhan</option>
-                                        @foreach ($pelabuhan as $item)
-                                            <option value="{{ $item->id }}">{{ $item->nama_pelabuhan }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="status_code">Code Status</label>
+                                    <input type="number" value="" class="form-control" id="status_code"
+                                        name="status_code">
                                 </div>
                                 <div class="form-group">
-                                    <label for="kapal_id">Nama Kapal</label>
-                                    <select id="kapal_id" class="form-control" name="kapal_id">
-                                        <option value="" selected disabled>Pilih kapal</option>
-                                        @foreach ($kapal as $item)
-                                            <option value="{{ $item->id }}">{{ $item->nama_kapal }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="quantity">Qty Kapal</label>
-                                    <input id="quantity" class="form-control" type="number" name="quantity">
+                                    <label for="status_name">Nama Status</label>
+                                    <input type="text" value="" class="form-control" id="status_name"
+                                        name="status_name">
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -112,10 +100,10 @@
         $(document).ready(function() {
             loadData()
 
-            //Reset Form
-            $('#btn-tambah').on('click', function () {
-                $('form')[0].reset()
-                $('form').attr('action', "{{ route('pelabuhan.store') }}")
+            //reset form
+            $('#btn-tambah').on('click', function() {
+                $('#form').attr('action', "{{ route('status.store') }}")
+                $('#form')[0].reset()
                 $('#id').val('')
             })
         })
@@ -125,19 +113,15 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: "{{ route('pelabuhan.index') }}"
+                    url: "{{ route('status.index') }}"
                 },
                 columns: [{
-                        data: 'nama_pelabuhan',
-                        name: 'nama_pelabuhan'
+                        data: 'status_code',
+                        name: 'status_code'
                     },
                     {
-                        data: 'nama_kapal',
-                        name: 'nama_kapal'
-                    },
-                    {
-                        data: 'quantity',
-                        name: 'quantity'
+                        data: 'status_name',
+                        name: 'status_name'
                     },
                     {
                         data: 'aksi',
@@ -183,10 +167,10 @@
         //Edit
         $(document).on('click', '.edit', function() {
             $('#modal-lg').modal()
-            $('#form').attr('action', "{{ route('pelabuhan.update') }}")
+            $('#form').attr('action', "{{ route('status.update') }}")
             let id = $(this).attr('id')
             $.ajax({
-                url: "{{ route('pelabuhan.edit') }}",
+                url: "{{ route('status.edit') }}",
                 type: 'POST',
                 data: {
                     id: id,
@@ -195,9 +179,8 @@
                 success: function(res) {
                     console.log(res);
                     $('#id').val(res.id)
-                    $('#pelabuhan_id').val(res.pelabuhan_id)
-                    $('#kapal_id').val(res.kapal_id)
-                    $('#quantity').val(res.quantity)
+                    $('#status_code').val(res.status_code)
+                    $('#status_name').val(res.status_name)
                     $('#btn-tutup').click()
                     $('#datatable').DataTable().ajax.reload()
                 },
@@ -225,7 +208,7 @@
                 if (result.isConfirmed) {
                     let id = $(this).attr('id')
                     $.ajax({
-                        url: "{{ route('pelabuhan.destroy') }}",
+                        url: "{{ route('status.destroy') }}",
                         type: 'POST',
                         data: {
                             id: id,

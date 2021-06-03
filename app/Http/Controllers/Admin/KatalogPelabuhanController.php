@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\KatalogKapal;
 use App\Models\KatalogPelabuhan;
-use App\Models\Pelabuhan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use function GuzzleHttp\Promise\all;
 
-class PelabuhanController extends Controller
+class KatalogPelabuhanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,13 +18,11 @@ class PelabuhanController extends Controller
      */
     public function index(Request $request)
     {
-        $pelabuhan = KatalogPelabuhan::all();
-        $kapal = KatalogKapal::all();
-        $data = Pelabuhan::join()->get();
+        $data = KatalogPelabuhan::all();
         if ($request->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
-                    $button = '<button class="edit btn btn-primary btn-sm mr-1" id="' . $data->id . '" name="edit" ><i class="fas fa-edit"></i></button>';
+                    $button = '<button class="edit btn btn-primary btn-sm mb-1" id="' . $data->id . '" name="edit" ><i class="fas fa-edit"></i></button>';
                     $button .= '<button class="hapus btn btn-danger btn-sm " id="' . $data->id . '" name="hapus"><i class="fas fa-trash-alt"></i></button>';
                     return $button;
                 })
@@ -34,7 +30,7 @@ class PelabuhanController extends Controller
                 ->make(true);
         }
 
-        return view('admin.pelabuhan.index', compact('data','kapal','pelabuhan'));
+        return view('admin.pelabuhan.katalog', compact('data'));
     }
 
     /**
@@ -56,16 +52,19 @@ class PelabuhanController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'pelabuhan_id' => 'required|string',
-            'kapal_id' => 'required|string',
-            'quantity' => 'required|integer',
+            'nama_pelabuhan' => 'required|string',
+            'lokasi_pelabuhan' => 'required|string',
+            'jenis_pelabuhan' => 'required',
+            'menghubungkan_ke' => 'required',
+            'kedatangan_kapal' => 'required',
         ];
 
         $message = [
-            'pelabuhan_id.required' => 'Kolom pelabuhan tidak boleh kosong!',
-            'kapal_id.required' => 'Kolom kapal tidak boleh kosong!',
-            'quantity.required' => 'Kolom kapal tidak boleh kosong!',
-            'quantity.integer' => 'Kolom kapal berupa angka!',
+            'nama_pelabuhan.required' => 'Kolom nama tidak boleh kosong!',
+            'lokasi_pelabuhan.required' => 'Kolom lokasi tidak boleh kosong!',
+            'jenis_pelabuhan.required' => 'Kolom Jenis Pelabuhan tidak boleh kosong!',
+            'menghubungkan_ke.required' => 'Kolom Menghubungkan tidak boleh kosong!',
+            'kedatangan_kapal.required' => 'Kolom kedatangan tidak boleh kosong!',
         ];
 
         $validasi = Validator::make($request->all(), $rules, $message);
@@ -73,7 +72,7 @@ class PelabuhanController extends Controller
             return response()->json(['message' => $validasi->errors()->first()], 422);
         }
 
-        $data = Pelabuhan::create($request->all());
+        $data = KatalogPelabuhan::create($request->all());
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Disimpan'], 200);
         } else {
@@ -100,7 +99,7 @@ class PelabuhanController extends Controller
      */
     public function edit(Request $request)
     {
-        $data = Pelabuhan::find($request->id);
+        $data = KatalogPelabuhan::find($request->id);
         return response()->json($data);
     }
 
@@ -114,16 +113,19 @@ class PelabuhanController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'pelabuhan_id' => 'required|string',
-            'kapal_id' => 'required|string',
-            'quantity' => 'required|integer',
+            'nama_pelabuhan' => 'required|string',
+            'lokasi_pelabuhan' => 'required|string',
+            'jenis_pelabuhan' => 'required',
+            'menghubungkan_ke' => 'required',
+            'kedatangan_kapal' => 'required',
         ];
 
         $message = [
-            'pelabuhan_id.required' => 'Kolom pelabuhan tidak boleh kosong!',
-            'kapal_id.required' => 'Kolom kapal tidak boleh kosong!',
-            'quantity.required' => 'Kolom kapal tidak boleh kosong!',
-            'quantity.integer' => 'Kolom kapal berupa angka!',
+            'nama_pelabuhan.required' => 'Kolom nama tidak boleh kosong!',
+            'lokasi_pelabuhan.required' => 'Kolom lokasi tidak boleh kosong!',
+            'jenis_pelabuhan.required' => 'Kolom Jenis Pelabuhan tidak boleh kosong!',
+            'menghubungkan_ke.required' => 'Kolom Menghubungkan tidak boleh kosong!',
+            'kedatangan_kapal.required' => 'Kolom kedatangan tidak boleh kosong!',
         ];
 
         $validasi = Validator::make($request->all(), $rules, $message);
@@ -131,7 +133,7 @@ class PelabuhanController extends Controller
             return response()->json(['message' => $validasi->errors()->first()], 422);
         }
 
-        $data = Pelabuhan::find($request->id);
+        $data = KatalogPelabuhan::find($request->id);
         $data->update($request->all());
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Diupdate!'], 200);
@@ -150,7 +152,7 @@ class PelabuhanController extends Controller
      */
     public function destroy(Request $request)
     {
-        $data = Pelabuhan::find($request->id);
+        $data = KatalogPelabuhan::find($request->id);
         $data->delete($data);
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Dihapus']);

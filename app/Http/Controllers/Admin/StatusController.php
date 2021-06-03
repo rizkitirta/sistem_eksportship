@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\KatalogKapal;
 use App\Models\KatalogPelabuhan;
-use App\Models\Pelabuhan;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use function GuzzleHttp\Promise\all;
 
-class PelabuhanController extends Controller
+class StatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +20,8 @@ class PelabuhanController extends Controller
      */
     public function index(Request $request)
     {
-        $pelabuhan = KatalogPelabuhan::all();
-        $kapal = KatalogKapal::all();
-        $data = Pelabuhan::join()->get();
+
+        $data = Status::all();
         if ($request->ajax()) {
             return datatables()->of($data)
                 ->addColumn('aksi', function ($data) {
@@ -34,7 +33,7 @@ class PelabuhanController extends Controller
                 ->make(true);
         }
 
-        return view('admin.pelabuhan.index', compact('data','kapal','pelabuhan'));
+        return view('admin.pengiriman.status', compact('data'));
     }
 
     /**
@@ -56,16 +55,13 @@ class PelabuhanController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'pelabuhan_id' => 'required|string',
-            'kapal_id' => 'required|string',
-            'quantity' => 'required|integer',
+            'status_code' => 'required|integer',
+            'status_name' => 'required|string',
         ];
 
         $message = [
-            'pelabuhan_id.required' => 'Kolom pelabuhan tidak boleh kosong!',
-            'kapal_id.required' => 'Kolom kapal tidak boleh kosong!',
-            'quantity.required' => 'Kolom kapal tidak boleh kosong!',
-            'quantity.integer' => 'Kolom kapal berupa angka!',
+            'status_code.required' => 'Kolom code tidak boleh kosong!',
+            'status_name.required' => 'Kolom nama tidak boleh kosong!',
         ];
 
         $validasi = Validator::make($request->all(), $rules, $message);
@@ -73,7 +69,7 @@ class PelabuhanController extends Controller
             return response()->json(['message' => $validasi->errors()->first()], 422);
         }
 
-        $data = Pelabuhan::create($request->all());
+        $data = Status::create($request->all());
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Disimpan'], 200);
         } else {
@@ -100,7 +96,7 @@ class PelabuhanController extends Controller
      */
     public function edit(Request $request)
     {
-        $data = Pelabuhan::find($request->id);
+        $data = Status::all($request->id);
         return response()->json($data);
     }
 
@@ -114,16 +110,13 @@ class PelabuhanController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'pelabuhan_id' => 'required|string',
-            'kapal_id' => 'required|string',
-            'quantity' => 'required|integer',
+            'status_code' => 'required|integer',
+            'status_name' => 'required|integer',
         ];
 
         $message = [
-            'pelabuhan_id.required' => 'Kolom pelabuhan tidak boleh kosong!',
-            'kapal_id.required' => 'Kolom kapal tidak boleh kosong!',
-            'quantity.required' => 'Kolom kapal tidak boleh kosong!',
-            'quantity.integer' => 'Kolom kapal berupa angka!',
+            'status_code.required' => 'Kolom code tidak boleh kosong!',
+            'status_name.required' => 'Kolom nama tidak boleh kosong!',
         ];
 
         $validasi = Validator::make($request->all(), $rules, $message);
@@ -131,7 +124,7 @@ class PelabuhanController extends Controller
             return response()->json(['message' => $validasi->errors()->first()], 422);
         }
 
-        $data = Pelabuhan::find($request->id);
+        $data = Status::all($request->id);
         $data->update($request->all());
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Diupdate!'], 200);
@@ -150,7 +143,7 @@ class PelabuhanController extends Controller
      */
     public function destroy(Request $request)
     {
-        $data = Pelabuhan::find($request->id);
+        $data = Status::all($request->id);
         $data->delete($data);
         if ($data) {
             return response()->json(['message' => 'Data Berhasil Dihapus']);

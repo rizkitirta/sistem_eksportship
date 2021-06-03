@@ -25,15 +25,11 @@
                         <thead>
                             <tr>
                                 <th>Nama Kapal</th>
-                                <th>Jenis Kapal</th>
-                                <th>Kecepatan</th>
-                                <th>Berat Muatan</th>
-                                <th>Daya Mesin</th>
-                                <th>Letak Mesin</th>
+                                <th>Container</th>
+                                <th>Quantity</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-
                     </table>
                 </div>
             </div>
@@ -41,7 +37,7 @@
     </div>
 
     <div class="modal fade" id="modal-lg">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah/Edit Data</h4>
@@ -61,37 +57,28 @@
                             <input type="hidden" name="id" id="id" value="">
                             @csrf
                             <div class="card-body">
-                               <div class="row">
-                                   <div class="col">
-                                    <div class="form-group">
-                                        <label for="nama_kapal">nama_kapal</label>
-                                        <input type="text" value="" class="form-control" id="nama_kapal"
-                                            name="nama_kapal">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="jenis_kapal">jenis_kapal</label>
-                                        <input type="text" value="" class="form-control" id="jenis_kapal" name="jenis_kapal">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="kecepatan">Kecepatan</label>
-                                        <input type="text" value="" class="form-control" id="kecepatan" name="kecepatan">
-                                    </div>
-                                   </div>
-                                   <div class="col">
-                                    <div class="form-group">
-                                        <label for="berat_muatan">berat_muatan</label>
-                                        <input type="text" value="" class="form-control" id="berat_muatan" name="berat_muatan">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="daya_mesin">daya_mesin</label>
-                                        <input type="text" value="" class="form-control" id="daya_mesin" name="daya_mesin">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="letak_mesin">letak_mesin</label>
-                                        <input type="text" value="" class="form-control" id="letak_mesin" name="letak_mesin">
-                                    </div>
-                                   </div>
-                               </div>
+                                <div class="form-group">
+                                    <label for="kapal_id">Nama Kapal</label>
+                                    <select id="kapal_id" class="form-control" name="kapal_id">
+                                        <option value="" disabled selected>Pilih Kapal</option>
+                                        @foreach ($kapal as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama_kapal }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="container_id">Nama Container</label>
+                                    <select id="container_id" class="form-control" name="container_id">
+                                        <option value="" disabled selected>Pilih Container</option>
+                                        @foreach ($container as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama_container }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="quantity">Qty Container</label>
+                                    <input type="number" value="" class="form-control" id="quantity" name="quantity">
+                                </div>
                             </div>
                             <!-- /.card-body -->
 
@@ -137,24 +124,12 @@
                         name: 'nama_kapal'
                     },
                     {
-                        data: 'jenis_kapal',
-                        name: 'jenis_kapal'
+                        data: 'nama_container',
+                        name: 'nama_container'
                     },
                     {
-                        data: 'Kecepatan',
-                        name: 'Kecepatan'
-                    },
-                    {
-                        data: 'berat_muatan',
-                        name: 'berat_muatan'
-                    },
-                    {
-                        data: 'daya_mesin',
-                        name: 'daya_mesin'
-                    },
-                    {
-                        data: 'letak_mesin',
-                        name: 'letak_mesin'
+                        data: 'quantity',
+                        name: 'quantity'
                     },
                     {
                         data: 'aksi',
@@ -212,12 +187,9 @@
                 success: function(res) {
                     console.log(res);
                     $('#id').val(res.id)
-                    $('#nama_kapal').val(res.nama_kapal)
-                    $('#jenis_kapal').val(res.jenis_kapal)
-                    $('#kecepatan').val(res.Kecepatan)
-                    $('#berat_muatan').val(res.berat_muatan)
-                    $('#daya_mesin').val(res.daya_mesin)
-                    $('#letak_mesin').val(res.letak_mesin)
+                    $('#kapal_id').val(res.kapal_id)
+                    $('#container_id').val(res.container_id)
+                    $('#quantity').val(res.quantity)
                     $('#btn-tutup').click()
                     $('#datatable').DataTable().ajax.reload()
                 },

@@ -19,6 +19,7 @@ class CreatePelabuhansTable extends Migration
             $table->foreign('pelabuhan_id')->references('id')->on('katalog_pelabuhans')->onDelete('cascade');
             $table->unsignedBigInteger('kapal_id');
             $table->foreign('kapal_id')->references('id')->on('katalog_kapals')->onDelete('cascade');
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

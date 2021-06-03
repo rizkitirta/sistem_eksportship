@@ -19,8 +19,11 @@ class CreateDataPengirimanTable extends Migration
             $table->foreign('kapal_id')->references('id')->on('katalog_kapals')->onDelete('cascade');
             $table->unsignedBigInteger('pelabuhan_id');
             $table->foreign('pelabuhan_id')->references('id')->on('katalog_pelabuhans')->onDelete('cascade');
+            $table->integer('qty_kapal')->nullable();
             $table->date('tgl_pengiriman');
-            $table->integer('total_container')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->unsignedBigInteger('status');
+            $table->foreign('status')->references('id')->on('statuses')->onDelete('cascade');
             $table->timestamps();
         });
     }

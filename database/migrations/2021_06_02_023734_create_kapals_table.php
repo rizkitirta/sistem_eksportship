@@ -19,6 +19,7 @@ class CreateKapalsTable extends Migration
             $table->foreign('kapal_id')->references('id')->on('katalog_kapals')->onDelete('cascade');
             $table->unsignedBigInteger('container_id');
             $table->foreign('container_id')->references('id')->on('katalog_containers')->onDelete('cascade');
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

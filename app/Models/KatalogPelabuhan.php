@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class KatalogPelabuhan extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    
 }
